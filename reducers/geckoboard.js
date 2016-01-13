@@ -1,16 +1,25 @@
-import { SWITCH_SERVICE, SWITCH_VISUALISATION } from '../constants/ActionTypes'
+import { SWITCH_SERVICE, SWITCH_VISUALISATION, UPDATE_CONFIG } from '../constants/ActionTypes'
 
 const initialState = {
   services: [
     'spreadsheet',
     'salesforce',
   ],
-  selectedService: 'spreadsheet',
+  selectedService: 'salesforce',
   visualisations: [
     'line',
     'bar',
   ],
   selectedVisualisation: 'line',
+  config: {
+    xAxis: 'first',
+  },
+  meta: {
+    groups: [
+      'first',
+      'second',
+    ]
+  }
 }
 
 export default function geckoboard(state = initialState, action) {
@@ -20,6 +29,9 @@ export default function geckoboard(state = initialState, action) {
 
     case SWITCH_SERVICE:
       return Object.assign({}, state, { selectedService: action.selectedService })
+
+    case UPDATE_CONFIG:
+      return Object.assign({}, state, { config: Object.assign({}, state.config, action.update) })
 
     default:
       return state

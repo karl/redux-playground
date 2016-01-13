@@ -5,20 +5,29 @@ import SalesforceLineConfigForm from './line/SalesforceLineConfigForm'
 import SalesforceLineVisualisation from './line/SalesforceLineVisualisation'
 import SalesforceServiceConfig from './SalesforceServiceConfig'
 
-const componentsMap = {
-  line: {
-    ConfigForm: SalesforceLineConfigForm,
-    Visualistion: SalesforceLineVisualisation,
+const propsGenerators = {
+  line: (state, actions) => {
+    return {
+      ConfigForm: partiallyApplyComponent(SalesforceLineConfigForm, {
+        config: state.config,
+        meta: state.meta,
+        updateConfig: actions.updateConfig,
+      }),
+      Visualistion: SalesforceLineVisualisation,
+    };
   },
-  bar: {
-    ConfigForm: SalesforceBarConfigForm,
-    Visualistion: SalesforceBarVisualisation,
+  bar: () => {
+    return {
+      ConfigForm: SalesforceBarConfigForm,
+      Visualistion: SalesforceBarVisualisation,
+    };
   }
 }
 
-const salesforceConfigGenerator = (selectedVisualisation) => {
-  const components = componentsMap[selectedVisualisation];
-  return partiallyApplyComponent(SalesforceServiceConfig, components);
+const salesforceConfigGenerator = (selectedVisualisation, state, actions) => {
+  const generator = propsGenerators[selectedVisualisation];
+  const props = generator(state, actions);
+  return partiallyApplyComponent(SalesforceServiceConfig, props);
 }
 
 export default salesforceConfigGenerator;

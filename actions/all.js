@@ -13,3 +13,10 @@ export function switchVisualisation(selectedVisualisation) {
     selectedVisualisation,
   };
 }
+
+export function updateConfig(update) {
+  return {
+    type: types.UPDATE_CONFIG,
+    update,
+  };
+}

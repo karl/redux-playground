@@ -11,9 +11,18 @@ import VisualisationPicker from '../components/VisualisationPicker'
 import spreadsheetConfigGenerator from '../components/spreadsheet/spreadsheetConfigGenerator'
 import salesforceConfigGenerator from '../components/salesforce/salesforceConfigGenerator'
 
+const SERVICE_CONFIGS = {
+  spreadsheet: spreadsheetConfigGenerator,
+  salesforce: salesforceConfigGenerator,
+}
+
 class App extends Component {
   render() {
     const { state, actions } = this.props
+
+    const generator = SERVICE_CONFIGS[state.selectedService];
+    const ServiceConfig = generator(state.selectedVisualisation, state, actions);
+
     return (
       <Page>
         <ServicePicker
@@ -27,7 +36,7 @@ class App extends Component {
           switchVisualisation={actions.switchVisualisation}
         />
         <MainSection
-          ServiceConfig={state.ServiceConfig}
+          ServiceConfig={ServiceConfig}
           actions={actions}
         />
       </Page>
@@ -35,19 +44,10 @@ class App extends Component {
   }
 }
 
-const SERVICE_CONFIGS = {
-  spreadsheet: spreadsheetConfigGenerator,
-  salesforce: salesforceConfigGenerator,
-}
-
 function mapStateToProps(state) {
-  const generator = SERVICE_CONFIGS[state.geckoboard.selectedService];
-  const ServiceConfig = generator(state.geckoboard.selectedVisualisation);
 
   return {
-    state: Object.assign({}, state.geckoboard, {
-      ServiceConfig,
-    })
+    state: state.geckoboard
   }
 }
 
