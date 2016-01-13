@@ -1,0 +1,8 @@
+.VisualisationPicker {
+  background: grey;
+  padding: 40px;
+}
+
+.VisualisationPicker .active {
+  font-weight: bold;
+}

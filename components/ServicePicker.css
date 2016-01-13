@@ -1,0 +1,8 @@
+.ServicePicker {
+  background: #999999;
+  padding: 5px;
+}
+
+.ServicePicker .active {
+  font-weight: bold;
+}
